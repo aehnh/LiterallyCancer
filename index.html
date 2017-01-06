@@ -29,8 +29,10 @@
 <!-- you really ought to include react-dom, but for react 0.14 you don't strictly have to. -->
 <script src="/static/js/react-0.14.3.js"></script>
 <script src="/static/js/literallycanvas.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
 <script type="text/javascript">
+    var socket = io();
     var lc = LC.init(document.getElementById("lc"), {
         imageURLPrefix: '/static/img',
         toolbarPosition: 'bottom',

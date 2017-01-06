@@ -8,9 +8,6 @@ router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
   var path = require('path');
   res.sendFile(path.resolve('index.html'));
-  io.on('connection', function (socket) {
-      console.log('a user connected');
-  })
 });
 
 module.exports = router;
