@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('untitled2:server');
 var http = require('http');
+var Canvas = require('../models/canvas');
 
 /**
  * Get port from environment and store in Express.
@@ -23,7 +24,7 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
     console.log('a user connected');
-
+    // response
     socket.on('json snapshot', function (msg) {
         console.log(msg);
         socket.broadcast.emit('json snapshot', msg);
