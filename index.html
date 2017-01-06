@@ -8,7 +8,8 @@
 
     <style type="text/css">
         .fs-container {
-            width: 320px;
+            width: 100%;
+            height: 100%;
             margin: auto;
         }
 
@@ -35,7 +36,10 @@
         toolbarPosition: 'bottom',
         defaultStrokeWidth: 2,
         strokeWidths: [1, 2, 3, 5, 30],
-        imageSize: {width: 5000, height: null}
+        imageSize: {width: null, height: null}
+    });
+    var unsubscribe = lc.on('drawingChange', function() {
+        console.log(JSON.stringify(lc.getSnapshot()));
     });
 </script>
 </body>
