@@ -52,7 +52,9 @@
         imageSize: {width: null, height: null}
     });
     var unsubscribe = lc.on('drawingChange', function() {
-        console.log(JSON.stringify(lc.getSnapshot()));
+        var snapshotJSON = JSON.stringify(lc.getSnapshot());
+        console.log(snapshotJSON);
+        socket.emit('json snapshot', snapshotJSON);
     });
 </script>
 </body>
