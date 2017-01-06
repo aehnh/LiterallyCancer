@@ -20,11 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/static/css/literallycanvas.css', express.static(__dirname + '/static/css/literallycanvas.css'));
-app.use('/static/js/literallycanvas.js', express.static(__dirname + '/static/js/literallycanvas.js'));
-app.use('/static/img', express.static(__dirname + '/static/img'));
-app.use('/static/js/react-0.14.3.js', express.static(__dirname + '/static/js/react-0.14.3.js'));
-//app.use('/static/js/react-15.4.1.js', express.static(__dirname + '/static/js/react-15.4.1.js'));
+app.use('/static', express.static(__dirname + '/static'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
