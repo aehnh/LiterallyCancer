@@ -51,25 +51,51 @@
         strokeWidths: [1, 2, 3, 5, 30],
         imageSize: {width: null, height: null}
     });
-    lc.on('shapeSave', function() {
-        var snapshotJSON = JSON.stringify(lc.getSnapshot());
-        //console.log(snapshotJSON);
-        socket.emit('json snapshot', JSON.stringify(lc.getSnapshot()));
+    lc.on('shapeSave', function(args) {
+        console.log(JSON.stringify(args));
+        console.log(LC.shapeToJSON(args.shape));
+        console.log(JSON.stringify(args.previousShapeId));
+        socket.emit('json shape', {
+            curr: LC.shapeToJSON(args.shape),
+            prev: args.previousShapeId
+        });
     });
     lc.on('clear', function() {
-        socket.emit('json snapshot', JSON.stringify(lc.getSnapshot()));
+        socket.emit('command', 'clear');
     });
-    lc.on('undo', function() {
-        socket.emit('json snapshot', JSON.stringify(lc.getSnapshot()));
+    const unsubscribe = lc.on('undo', function() {
+        socket.emit('command', 'undo');
     });
     lc.on('redo', function() {
-        socket.emit('json snapshot', JSON.stringify(lc.getSnapshot()));
+        socket.emit('command', 'redo');
+    });
+    lc.on('backgroundColorChange', function(newColor) {
+
     });
     socket.on('json snapshot', function(msg) {
         console.log(msg);
         lc.loadSnapshot(JSON.parse(msg));
-        //var canvas = LC.renderShapesToCanvas(LC.snapshotToShapes(msg), {x: 0, y: 0, width: 'infinite', height: 'infinite'}, canvas = lc);
-        //lc = canvas;
+    });
+    socket.on('json shape', function(args) {
+        console.log(LC.JSONToShape(args.curr));
+        console.log(args.prev);
+        lc.saveShape(LC.JSONToShape(args.curr), false, args.prev);
+    });
+    socket.on('command', function(comm) {
+        if(comm == 'clear') {
+            console.log('clear');
+            lc.clear(false);
+        } else if(comm == 'undo') {
+            console.log('undo');
+            unsubscribe();
+            lc.undo();
+            const unsubscribe = lc.on('undo', function() {
+                socket.emit('command', 'undo');
+            });
+        } else if(comm == 'redo') {
+            console.log('redo');
+            lc.redo(false);
+        }
     });
 </script>
 </body>

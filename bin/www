@@ -28,6 +28,14 @@ io.on('connection', function (socket) {
         console.log(msg);
         socket.broadcast.emit('json snapshot', msg);
     });
+    socket.on('json shape', function (args) {
+        console.log(args);
+        socket.broadcast.emit('json shape', args);
+    });
+    socket.on('command', function (comm) {
+        console.log(comm);
+        socket.broadcast.emit('command', comm);
+    });
 });
 
 /**
