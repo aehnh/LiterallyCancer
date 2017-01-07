@@ -24,7 +24,7 @@ router.get('/:id', function (req, res) {
     if(!canvas) {
       console.error('no such canvas');
     } else {
-      res.render(path.resolve('index'), {snapshotJSON: canvas.snapshotJSON, isCreation: false}, function (err, html) {
+      res.render(path.resolve('index'), {id: req.params.id, snapshotJSON: canvas.snapshotJSON, isCreation: false}, function (err, html) {
         res.send(html);
       })
     }

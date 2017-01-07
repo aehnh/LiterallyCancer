@@ -44,9 +44,9 @@ io.on('connection', function (socket) {
       console.log(args);
       Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
         if (err)  {
-          console.err(err);
+          console.error(err);
         } else if (!canvas) {
-          console.err('invalid canvas id');
+          console.error('invalid canvas id');
         } else {
           console.log(canvas);
         }
