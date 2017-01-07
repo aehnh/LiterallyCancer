@@ -8,6 +8,17 @@ var app = require('../app');
 var debug = require('debug')('untitled2:server');
 var http = require('http');
 var Canvas = require('../models/canvas');
+var mongoose = require('mongoose');
+
+// connect to mongoDB server
+var db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function () {
+  //connected to mongoDB server
+  console.log('connected to mongoDB server');
+});
+
+mongoose.connect('mongodb://localhost/canvas');
 
 /**
  * Get port from environment and store in Express.
@@ -30,8 +41,18 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('json snapshot', msg);
     });
     socket.on('json shape', function (args) {
-        console.log(args);
-        socket.broadcast.emit('json shape', args);
+      console.log(args);
+      Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
+        if (err)  {
+          console.err(err);
+        } else if (!canvas) {
+          console.err('invalid canvas id');
+        } else {
+          console.log(canvas);
+        }
+
+      });
+      socket.broadcast.emit('json shape', args);
     });
     socket.on('command', function (comm) {
         console.log(comm);
