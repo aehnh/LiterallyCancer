@@ -36,6 +36,9 @@ html
         script(src='https://cdn.socket.io/socket.io-1.4.5.js')
         script(type='text/javascript').
             var socket = io();
+            socket.on('connect', function () {
+                socket.emit('joinRoom', '#{id}');
+            });
             var lc = LC.init(document.getElementById("lc"), {
                 imageURLPrefix: '/static/img',
                 toolbarPosition: 'bottom',
@@ -60,17 +63,17 @@ html
                 });
             });
             lc.on('clear', function () {
-                socket.emit('command', 'clear');
+                socket.emit('command', {comm: 'clear', id: '#{id}'});
             });
             lc.on('undo', function () {
-                socket.emit('command', 'undo');
+                socket.emit('command', {comm: 'undo', id: '#{id}'});
             });
             lc.on('redo', function () {
-                socket.emit('command', 'redo');
+                socket.emit('command', {comm: 'redo', id: '#{id}'});
             });
             lc.on('backgroundColorChange', function(newColor){
                 console.log(JSON.stringify(newColor));
-                socket.emit('background color', newColor);
+                socket.emit('background color', {color: newColor, id: '#{id}'});
             });
             socket.on('json snapshot', function (msg) {
                 console.log(msg);
@@ -98,5 +101,4 @@ html
             socket.on('background color', function(color) {
                 console.log(color);
                 lc.setColor('background', color, false);
-
             });

@@ -34,11 +34,16 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
+    var room_id;
     console.log('a user connected');
     // response
-    socket.on('json snapshot', function (msg) {
-        console.log(msg);
-        socket.broadcast.emit('json snapshot', msg);
+    socket.on('joinRoom', function (data) {
+        room_id = data;
+        socket.join(room_id);
+    });
+    socket.on('json snapshot', function (args) {
+        console.log(args.msg);
+        socket.broadcast.to(args.id).emit('json snapshot', args.msg);
     });
     socket.on('json shape', function (args) {
         console.log(args);
@@ -49,17 +54,17 @@ io.on('connection', function (socket) {
                 console.error('invalid canvas id');
             } else {
                 console.log(canvas);
+                socket.broadcast.to(args.id).emit('json shape', args);
             }
         });
-        socket.broadcast.emit('json shape', args);
     });
-    socket.on('command', function (comm) {
-        console.log(comm);
-        socket.broadcast.emit('command', comm);
+    socket.on('command', function (args) {
+        console.log(args.comm);
+        socket.broadcast.to(args.id).emit('command', args.comm);
     });
-    socket.on('background color', function (color) {
-        console.log(color);
-        socket.broadcast.emit('background color', color);
+    socket.on('background color', function (args) {
+        console.log(args.color);
+        socket.broadcast.to(args.id).emit('background color', args.color);
     });
 });
 
