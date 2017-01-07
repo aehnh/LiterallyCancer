@@ -37,26 +37,26 @@ html
         script(type='text/javascript').
             var socket = io();
             var lc = LC.init(document.getElementById("lc"), {
-              imageURLPrefix: '/static/img',
-              toolbarPosition: 'bottom',
-              defaultStrokeWidth: 2,
-              strokeWidths: [1, 2, 3, 5, 30],
-              imageSize: {width: null, height: null}
+                imageURLPrefix: '/static/img',
+                toolbarPosition: 'bottom',
+                defaultStrokeWidth: 2,
+                strokeWidths: [1, 2, 3, 5, 30],
+                imageSize: {width: null, height: null}
             });
             if (#{isCreation})
-              console.log('id : #{id}');
+                console.log('id : #{id}');
             else
-              //console.log('canvas : #{snapshotJSON}');
-              lc.loadSnapshot(!{snapshotJSON});
+                //console.log('canvas : #{snapshotJSON}');
+                lc.loadSnapshot(!{snapshotJSON});
             lc.on('shapeSave', function (args) {
                 console.log(JSON.stringify(args));
                 console.log(LC.shapeToJSON(args.shape));
                 console.log(JSON.stringify(args.previousShapeId));
                 socket.emit('json shape', {
-                  curr: LC.shapeToJSON(args.shape),
-                  prev: args.previousShapeId,
-                  id: '#{id}',
-                  snapshot: JSON.stringify(lc.getSnapshot())
+                    curr: LC.shapeToJSON(args.shape),
+                    prev: args.previousShapeId,
+                    id: '#{id}',
+                    snapshot: JSON.stringify(lc.getSnapshot())
                 });
             });
             lc.on('clear', function () {
@@ -67,6 +67,10 @@ html
             });
             lc.on('redo', function () {
                 socket.emit('command', 'redo');
+            });
+            lc.on('backgroundColorChange', function(newColor){
+                console.log(JSON.stringify(newColor));
+                socket.emit('background color', newColor);
             });
             socket.on('json snapshot', function (msg) {
                 console.log(msg);
@@ -85,14 +89,14 @@ html
                     lc.clear(false);
                 } else if (comm == 'undo') {
                     console.log('undo');
-                    unsubscribe();
-                    lc.undo();
-                    const unsubscribe = lc.on('undo', function () {
-                        socket.emit('command', 'undo');
-                    });
+                    lc.undo(false);
                 } else if (comm == 'redo') {
                     console.log('redo');
                     lc.redo(false);
                 }
             });
+            socket.on('background color', function(color) {
+                console.log(color);
+                lc.setColor('background', color, false);
 
+            });

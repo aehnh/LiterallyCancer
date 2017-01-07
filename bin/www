@@ -41,22 +41,25 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('json snapshot', msg);
     });
     socket.on('json shape', function (args) {
-      console.log(args);
-      Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
-        if (err)  {
-          console.error(err);
-        } else if (!canvas) {
-          console.error('invalid canvas id');
-        } else {
-          console.log(canvas);
-        }
-
-      });
-      socket.broadcast.emit('json shape', args);
+        console.log(args);
+        Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
+            if (err)  {
+                console.error(err);
+            } else if (!canvas) {
+                console.error('invalid canvas id');
+            } else {
+                console.log(canvas);
+            }
+        });
+        socket.broadcast.emit('json shape', args);
     });
     socket.on('command', function (comm) {
         console.log(comm);
         socket.broadcast.emit('command', comm);
+    });
+    socket.on('background color', function (color) {
+        console.log(color);
+        socket.broadcast.emit('background color', color);
     });
 });
 
