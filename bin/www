@@ -42,12 +42,17 @@ io.on('connection', function (socket) {
         socket.join(room_id);
     });
     socket.on('json snapshot', function (args) {
-        console.log(args.msg);
-        socket.broadcast.to(args.id).emit('json snapshot', args.msg);
+        Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
+            if (err)  {
+                console.error(err);
+            } else if (!canvas) {
+                console.error('invalid canvas id');
+            }
+        });
     });
     socket.on('json shape', function (args) {
         console.log(args);
-        Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
+        /* Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
             if (err)  {
                 console.error(err);
             } else if (!canvas) {
@@ -56,7 +61,8 @@ io.on('connection', function (socket) {
                 console.log(canvas);
                 socket.broadcast.to(args.id).emit('json shape', args);
             }
-        });
+        }); */
+        socket.broadcast.to(args.id).emit('json shape', args);
     });
     socket.on('command', function (args) {
         console.log(args.comm);

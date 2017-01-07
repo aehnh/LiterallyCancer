@@ -52,6 +52,12 @@ html
             else
                 //console.log('canvas : #{snapshotJSON}');
                 lc.loadSnapshot(!{snapshotJSON});
+            lc.on('drawingChange', function() {
+                socket.emit('json snapshot', {
+                    id: '#{id}',
+                    snapshot: JSON.stringify(lc.getSnapshot())
+                });
+            });
             lc.on('shapeSave', function (args) {
                 console.log(JSON.stringify(args));
                 console.log(LC.shapeToJSON(args.shape));
@@ -72,16 +78,23 @@ html
             lc.on('redo', function () {
                 socket.emit('command', {comm: 'redo', id: '#{id}'});
             });
-            lc.on('backgroundColorChange', function(newColor){
+            lc.on('backgroundColorChange', function (newColor) {
+                //console.log(JSON.stringify(newColor));
+                //socket.emit('background color', {color: newColor, id: '#{id}'});
+            });
+            lc.on('backgroundColorChange2', function (newColor) {
                 console.log(JSON.stringify(newColor));
                 socket.emit('background color', {color: newColor, id: '#{id}'});
             });
-            socket.on('json snapshot', function (msg) {
+            lc.on('pointerup', function(position) {
+                console.log("up");
+            });
+            /* socket.on('json snapshot', function (msg) {
                 console.log(msg);
                 lc.loadSnapshot(JSON.parse(msg));
                 //var canvas = LC.renderShapesToCanvas(LC.snapshotToShapes(msg), {x: 0, y: 0, width: 'infinite', height: 'infinite'}, canvas = lc);
                 //lc = canvas;
-            });
+            }); */
             socket.on('json shape', function (args) {
                 console.log(LC.JSONToShape(args.curr));
                 console.log(args.prev);
