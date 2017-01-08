@@ -47,7 +47,7 @@ html
         .fs-container
             #lc
         #masterfab.fab
-            span ↓
+            a#imageSave(href='', download='canvas') ↓
         // you really ought to include react-dom, but for react 0.14 you don't strictly have to.
         script(src='http://code.jquery.com/jquery-3.1.1.js')
         script(src='/static/js/react-0.14.3.js')
@@ -134,7 +134,6 @@ html
             // floating action button click listener
             $(function () {
                 $('#masterfab').click(function (e) {
-                    e.preventDefault();
-                    window.open(lc.getImage().toDataURL());
+                    document.getElementById("imageSave").href = lc.getImage().toDataURL();
                 });
             });
