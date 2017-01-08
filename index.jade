@@ -29,68 +29,41 @@ html
             }
 
             .fab {
-                background: #1C9E00;
+                background: #03A9F4;
+                width: 64px;
+                height: 64px;
                 border-radius: 50%;
                 text-align: center;
                 color: #FFF;
+                box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25);
                 position: fixed;
-                right: 70px;
-                font-size: 25px;
-                padding: 9px 2.5px 6px;
-                -webkit-filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .42));
-            }
-
-            .fab span {
-                vertical-align: middle;
-            }
-
-            .fab.child {
-                width: 53.666667px;
-                height: 37.666667px;
-                display: none;
-                opacity: 0;
-                background: transparent;
-                border-radius: 0%;
-                right: 63px;
-                padding: 0;
-            }
-
-            .fab img {
-                border-radius: 50%;
-            }
-
-            .backdrop {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #FAFAFA;
-                opacity: 0.7;
-                display: none;
+                bottom: calc(1 / 4 * 3 * 64px);
+                right: calc(1 / 4 * 3 * 64px);
+                font-size: 2.6667em;
+                display: inline-block;
+                cursor: default;
             }
     body
         .fs-container
             #lc
-        .backdrop
-        .fab.child(data-subitem='1')
-            a(href='tel:+121212121')
-                img(alt='', src='images/smile.jpg')
-        .fab.child(data-subitem='2')
-            a(href='tel:+1212121212')
-                img(alt='', src='about/smile.jpg')
-        #masterfab.fab.visible-xs.float-phone
-            i.fa.icon-phone.soft-white
+        #masterfab.fab
+            span ↓
         // you really ought to include react-dom, but for react 0.14 you don't strictly have to.
+        script(src='http://code.jquery.com/jquery-3.1.1.js')
         script(src='/static/js/react-0.14.3.js')
         script(src='/static/js/literallycanvas.js')
         script(src='https://cdn.socket.io/socket.io-1.4.5.js')
         script(type='text/javascript').
-            var socket = io();
+            // url change
             window.history.pushState('', '', '/#{id}');
+
+            // socket initialization and room join
+            var socket = io();
             socket.on('connect', function () {
                 socket.emit('joinRoom', '#{id}');
             });
+
+            // literallyCanvas initialization
             var lc = LC.init(document.getElementById("lc"), {
                 imageURLPrefix: '/static/img',
                 toolbarPosition: 'bottom',
@@ -101,8 +74,9 @@ html
             if (#{isCreation})
                 console.log('id : #{id}');
             else
-                //console.log('canvas : #{snapshotJSON}');
                 lc.loadSnapshot(!{snapshotJSON});
+
+            // literallyCanvas event handlers
             lc.on('drawingChange', function() {
                 socket.emit('json snapshot', {
                     id: '#{id}',
@@ -129,23 +103,12 @@ html
             lc.on('redo', function () {
                 socket.emit('command', {comm: 'redo', id: '#{id}'});
             });
-            lc.on('backgroundColorChange', function (newColor) {
-                //console.log(JSON.stringify(newColor));
-                //socket.emit('background color', {color: newColor, id: '#{id}'});
-            });
             lc.on('backgroundColorChange2', function (newColor) {
                 console.log(JSON.stringify(newColor));
                 socket.emit('background color', {color: newColor, id: '#{id}'});
             });
-            lc.on('pointerup', function(position) {
-                console.log("up");
-            });
-            /* socket.on('json snapshot', function (msg) {
-                console.log(msg);
-                lc.loadSnapshot(JSON.parse(msg));
-                //var canvas = LC.renderShapesToCanvas(LC.snapshotToShapes(msg), {x: 0, y: 0, width: 'infinite', height: 'infinite'}, canvas = lc);
-                //lc = canvas;
-            }); */
+
+            // socket event handlers
             socket.on('json shape', function (args) {
                 console.log(LC.JSONToShape(args.curr));
                 console.log(args.prev);
@@ -166,4 +129,12 @@ html
             socket.on('background color', function(color) {
                 console.log(color);
                 lc.setColor('background', color, false);
+            });
+
+            // floating action button click listener
+            $(function () {
+                $('#masterfab').click(function (e) {
+                    e.preventDefault();
+                    window.open(lc.getImage().toDataURL());
+                });
             });
