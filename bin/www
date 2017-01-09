@@ -41,6 +41,9 @@ io.on('connection', function (socket) {
         room_id = data;
         socket.join(room_id);
     });
+    socket.on('chat message', function (args) {
+        io.in(args.id).emit('chat message', args);
+    });
     socket.on('json snapshot', function (args) {
         Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
             if (err)  {

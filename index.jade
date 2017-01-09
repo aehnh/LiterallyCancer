@@ -11,8 +11,24 @@ html
             *{
                 margin: 0;
                 padding: 0;
+                font-family: Arial;
             }
+
+            .chat-sidebar {
+                display: inline-block;
+                width: 250px;
+                position: fixed;
+                height: 100%;
+                right: 0;
+                top: 0;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background-color: #e6e6e6;
+                border-left: 1px solid #d5d7dc;
+            }
+
             .fs-container {
+                display: inline-block;
                 position: absolute;
                 width: 100%;
                 height: 100%;
@@ -38,14 +54,74 @@ html
                 box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25);
                 position: fixed;
                 bottom: calc(1 / 4 * 3 * 64px);
-                right: calc(1 / 4 * 3 * 64px);
+                right: calc(250px + 1 / 4 * 3 * 64px);
                 font-size: 2.6667em;
                 display: inline-block;
                 cursor: default;
             }
+
+            textarea.chat-window-text-box {
+                border-color: #d5d7dc;
+                border-image: none;
+                border-radius: 0;
+                border-style: solid;
+                border-width: 1px 0 0;
+                box-sizing: border-box;
+                font-size: 16px;
+                line-height: 1.2em;
+                margin: 0;
+                overflow: hidden;
+                padding: 3px;
+                resize: none;
+                width: 100%;
+                word-wrap: break-word;
+                height: 50px;
+            }
+
+            textarea.chat-window-text-box:focus {
+                outline: none;
+            }
+
+            .chat-window-text-box-wrapper {
+                position: absolute;
+                bottom: 50px;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                height: 50px;
+            }
+
+            #chat-window-content-wrapper {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: calc(100% - 100px);
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+                overflow: auto;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            #chat-window-content-wrapper li {
+                padding: 5px 10px;
+                word-break: break-all;
+            }
+
+            #chat-window-content-wrapper li:nth-child(odd) {
+                background: #dddddd;
+            }
+
     body
         .fs-container
             #lc
+        .chat-sidebar(id='shell', style='display: none;')
+            #chat-window-content-wrapper
+            .chat-window-text-box-wrapper
+                textarea.chat-window-text-box(id='only', rows='1', onkeydown="maybeSubmit();", onkeyup="maybeClear();")
         #masterfab.fab
             a#imageSave(href='', download='canvas') ↓
         // you really ought to include react-dom, but for react 0.14 you don't strictly have to.
@@ -56,6 +132,28 @@ html
         script(type='text/javascript').
             // declare some variables
             var canvasTitle;
+
+            window.onload = function () {
+                $('#shell').show();
+                // TODO assign id?
+            };
+
+            function maybeSubmit() {
+                var key = window.event.keyCode;
+                if (key === 13) {
+                    var val = document.getElementById('only').value;
+                    if(val != '') {
+                        console.log(val);
+                        socket.emit('chat message', {id: '#{id}', message: val});
+                    }
+                }
+            }
+            function maybeClear() {
+                var key = window.event.keyCode;
+                if (key === 13) {
+                    document.getElementById('only').value = '';
+                }
+            }
 
             // url change
             window.history.pushState('', '', '/#{id}');
@@ -117,6 +215,13 @@ html
             });
 
             // socket event handlers
+            socket.on('chat message', function(args) {
+                console.log(args.message);
+                var element = '<li>' + args.message + '</li>';
+                var cached = $('#chat-window-content-wrapper');
+                cached.append(element);
+                cached.scrollTop(cached[0].scrollHeight);
+            });
             socket.on('json shape', function (args) {
                 console.log(LC.JSONToShape(args.curr));
                 console.log(args.prev);
