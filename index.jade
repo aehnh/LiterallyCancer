@@ -54,6 +54,9 @@ html
         script(src='/static/js/literallycanvas.js')
         script(src='https://cdn.socket.io/socket.io-1.4.5.js')
         script(type='text/javascript').
+            // declare some variables
+            var canvasTitle;
+
             // url change
             window.history.pushState('', '', '/#{id}');
 
@@ -136,4 +139,11 @@ html
                 $('#masterfab').click(function (e) {
                     document.getElementById("imageSave").href = lc.getImage().toDataURL();
                 });
+            });
+
+
+            // set title
+            $('#lc').ready(function () {
+                canvasTitle = prompt("Enter the title of canvas", "My canvas");
+                document.title = canvasTitle;
             });
