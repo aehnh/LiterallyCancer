@@ -19,19 +19,20 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function (req, res) {
   Canvas.findById(req.params.id, function (err, canvas) {
-    var path = require('path');
-    if (err) console.error('error');
-    if(!canvas) {
-      console.error('no such canvas');
-    } else {
-      res.render(path.resolve('index'), {
-        id: req.params.id,
-        snapshotJSON: canvas.snapshotJSON,
-        isCreation: false
-      }, function (err, html) {
-        res.send(html);
-      })
-    }
+      var path = require('path');
+      if (err) console.error('error');
+      if(!canvas) {
+          console.error('no such canvas');
+      } else {
+          res.render(path.resolve('index'), {
+              id: req.params.id,
+              title: canvas.title,
+              snapshotJSON: canvas.snapshotJSON,
+              isCreation: false
+          }, function (err, html) {
+              res.send(html);
+          })
+      }
   });
 });
 

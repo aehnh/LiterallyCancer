@@ -72,6 +72,15 @@ io.on('connection', function (socket) {
         console.log(args.color);
         socket.broadcast.to(args.id).emit('background color', args.color);
     });
+    socket.on('set title', function (args) {
+        Canvas.findByIdAndUpdate(args.id, {title: args.title}, function (err, canvas) {
+            if (err)  {
+                console.error(err);
+            } else if (!canvas) {
+                console.error('invalid canvas id');
+            }
+        });
+    })
 });
 
 /**

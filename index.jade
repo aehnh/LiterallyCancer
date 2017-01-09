@@ -74,10 +74,15 @@ html
                 strokeWidths: [1, 2, 3, 5, 30],
                 imageSize: {width: null, height: null}
             });
-            if (#{isCreation})
+            if (#{isCreation}) {
                 console.log('id : #{id}');
-            else
+                // set title
+            }
+            else {
+                canvasTitle = '#{title}';
+                document.title = canvasTitle;
                 lc.loadSnapshot(!{snapshotJSON});
+            }
 
             // literallyCanvas event handlers
             lc.on('drawingChange', function() {
@@ -140,10 +145,13 @@ html
                     document.getElementById("imageSave").href = lc.getImage().toDataURL();
                 });
             });
-
-
-            // set title
             $('#lc').ready(function () {
-                canvasTitle = prompt("Enter the title of canvas", "My canvas");
-                document.title = canvasTitle;
+                if (#{isCreation}) {
+                    canvasTitle = prompt("Enter the title of canvas", "My canvas");
+                    document.title = canvasTitle;
+                    socket.emit('set title', {
+                        id: '#{id}',
+                        title: canvasTitle
+                    });
+                }
             });
