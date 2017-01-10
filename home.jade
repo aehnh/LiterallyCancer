@@ -95,7 +95,10 @@ html
                             .col-md-3.col-sm-5.grid-item
                                 .c-card
                                     .c-card__thumbnail
-                                        img(src='#{canvas.dataURL}', width='240', height='152', alt='No content')
+                                        if canvas.dataURL != null
+                                            img(src='#{canvas.dataURL}', width='240', height='152')
+                                        else
+                                            img(src='/static/img/empty.png', width='240', height='152')
                                     .c-card__name
                                         p #{canvas.title}
                                     .c-card__description
@@ -141,3 +144,10 @@ html
                     }
                 });
             });
+            $('#masterfab').hover(
+                function () {
+                    document.getElementById("masterfab").style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.5)';
+                }, function () {
+                    document.getElementById("masterfab").style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25)';
+                }
+            );
