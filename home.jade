@@ -138,9 +138,17 @@ html
                 FB.getLoginStatus(function (response) {
                     if (response.status === 'connected') {
                         console.log('Logged in.');
+                        FB.logout();
+                        document.getElementById('loginButton').textContent = 'Log in with Facebook';
                     }
                     else {
-                        FB.login();
+                        FB.login(function () {
+                            FB.api('/me', function (response) {
+                                console.log('Successful login for: ' + response.name);
+                                console.log('Successful login for: ' + response.email);
+                                document.getElementById('loginButton').textContent = 'Welcome, ' + response.name;
+                            });
+                        }, {scope: 'email'});
                     }
                 });
             });
