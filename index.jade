@@ -16,7 +16,7 @@ html
 
             .chat-sidebar {
                 display: inline-block;
-                width: 250px;
+                width: 400px;
                 position: fixed;
                 height: 100%;
                 right: 0;
@@ -54,7 +54,7 @@ html
                 box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25);
                 position: fixed;
                 bottom: calc(1 / 4 * 3 * 64px);
-                right: calc(250px + 1 / 4 * 3 * 64px);
+                right: calc(400px + 1 / 4 * 3 * 64px);
                 font-size: 2.6667em;
                 display: inline-block;
                 cursor: default;
@@ -123,7 +123,7 @@ html
             .chat-window-text-box-wrapper
                 textarea.chat-window-text-box(id='only', rows='1', onkeydown="maybeSubmit();", onkeyup="maybeClear();")
         #masterfab.fab
-            a#imageSave(href='', download='canvas') ↓
+            a#imageSave(href='', download='canvas', style="text-decoration:none") ↓
         // you really ought to include react-dom, but for react 0.14 you don't strictly have to.
         script(src='http://code.jquery.com/jquery-3.1.1.js')
         script(src='/static/js/react-0.14.3.js')
@@ -132,10 +132,24 @@ html
         script(type='text/javascript').
             // declare some variables
             var canvasTitle;
+            var tempUserName;
+            var adjectives = ['Agreeable','Brave', 'Calm', 'Delightful', 'Eager', 'Faithful', 'Gentle', 'Happy', 'Intelligent', 'Jolly', 'Kind', 'Lively', 'Mighty', 'Nice', 'Obedient', 'Proud', 'Quick', 'Relieved', 'Satisfying', 'Thankful', 'Useful', 'Victorious', 'Witty', 'Xenial', 'Youthful', 'Zealous'];
+            var champions = ['Ana', 'Bastion', 'D.Va', 'Genzi', 'Hanzo', 'Junkrat', 'Lucio', 'Mccree', 'Mei', 'Mercy', 'Reaper', 'Reinhardt', 'Roadhog', 'Torbjorn', 'Tracer', 'Windowmaker', 'Winston', 'Soldier: 76', 'Sombra', 'Symmetra', 'Zarya', 'Zenyata'];
 
             window.onload = function () {
+                // set title
+                if (#{isCreation}) {
+                    canvasTitle = prompt("Enter the title of canvas", "My canvas");
+                    document.title = canvasTitle;
+                    socket.emit('set title', {
+                        id: '#{id}',
+                        title: canvasTitle
+                    });
+                }
+                // show chatting sidebar
                 $('#shell').show();
                 // TODO assign id?
+                tempUserName = adjectives[Math.floor((Math.random() * adjectives.length))]+ ' ' + champions[Math.floor((Math.random() * champions.length))];
             };
 
             function maybeSubmit() {
@@ -144,7 +158,7 @@ html
                     var val = document.getElementById('only').value;
                     if(val != '') {
                         console.log(val);
-                        socket.emit('chat message', {id: '#{id}', message: val});
+                        socket.emit('chat message', {id: '#{id}', message: tempUserName + ' : ' + val});
                     }
                 }
             }
@@ -250,6 +264,7 @@ html
                     document.getElementById("imageSave").href = lc.getImage().toDataURL();
                 });
             });
+            /*
             $('#lc').ready(function () {
                 if (#{isCreation}) {
                     canvasTitle = prompt("Enter the title of canvas", "My canvas");
@@ -260,3 +275,4 @@ html
                     });
                 }
             });
+            */
