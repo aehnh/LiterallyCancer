@@ -91,19 +91,19 @@ html
                 // Canvas grid item
                 .col-md-12
                     each canvas in canvasList
-                        a(target='_blank', href='/#{canvas._id}')
-                            .col-md-3.col-sm-5.grid-item
-                                .c-card
+                        .col-md-3.col-sm-5.grid-item
+                            .c-card
+                                a(target='_blank', href='/#{canvas._id}')
                                     .c-card__thumbnail
                                         if canvas.dataURL != null
                                             img(src='#{canvas.dataURL}', width='240', height='152')
                                         else
                                             img(src='/static/img/empty.png', width='240', height='152')
-                                    .c-card__name
-                                        p #{canvas.title}
-                                    .c-card__description
-                                        p
-                                            | Description
+                                .c-card__name
+                                    p #{canvas.title}
+                                .c-card__description
+                                    p
+                                        | Description
         a#masterfab(target='_blank', href='/newToUser/#{facebookID}').fab
             img(src='/static/img/add.png')
         .fs-container
@@ -136,3 +136,19 @@ html
                     document.getElementById("masterfab").style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25)';
                 }
             );
+            $('.c-card__description').each(function(index) {
+                $(this).on('dblclick', function () {
+                    var prompted = prompt("Write description", this.value);
+                    if (prompted != null) {
+                        this.textContent = prompted;
+                    }
+                })
+            });
+            $('.c-card__name').each(function (index) {
+                $(this).on('dblclick', function () {
+                    var prompted = prompt("Change title", this.value);
+                    if (prompted != null) {
+                        this.textContent = prompted;
+                    }
+                })
+            });

@@ -64,8 +64,9 @@ router.get('/dev/home', function(req, res) {
     });
 });
 router.get('/home/:facebookID/:name', function(req, res) {
-    Canvas.find({whose: req.params.facebookID}, function (err, canvasList) {
+    Canvas.find({whose: req.params.facebookID}, '_id dataURL title description',  function (err, canvasList) {
         var path = require('path');
+        //var canvas_list = JSON.stringify(canvasList);
         res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID, name: req.params.name}, function (err, html) {
             //console.log(html);
             console.log(err);
@@ -93,6 +94,30 @@ router.get('/home/:facebookID/:name/:search', function(req, res) {
         });
     });
     */
+});
+
+router.post('/titleChange/:id', function(req, res) {
+    Canvas.findByIdAndUpdate(req.params.id, {title: req.body.title}, function (err, canvas) {
+        if (err)  {
+            console.error(err);
+        } else if (!canvas) {
+            console.error('invalid canvas id');
+        } else {
+            console.log('title change success');
+        }
+    });
+});
+
+router.post('/descriptionChange/:id', function(req, res) {
+    Canvas.findByIdAndUpdate(req.params.id, {description: req.body.description}, function (err, canvas) {
+        if (err)  {
+            console.error(err);
+        } else if (!canvas) {
+            console.error('invalid canvas id');
+        } else {
+            console.log('description change success');
+        }
+    });
 });
 
 module.exports = router;
