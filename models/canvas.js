@@ -7,7 +7,8 @@ var Schema = mongoose.Schema;
 var canvasSchema = new Schema({
     title: String,
     snapshotJSON: String,
-    dataURL: String
+    dataURL: String,
+    whose: String
 });
 
 module.exports = mongoose.model('canvas', canvasSchema);
