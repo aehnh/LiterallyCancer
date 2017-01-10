@@ -37,13 +37,36 @@ router.get('/:id', function (req, res) {
 });
 
 router.get('/dev/home', function(req, res) {
-    Canvas.find(function (err, canvasList) {
+    Canvas.find({}, function (err, canvasList) {
         var path = require('path');
         res.render(path.resolve('home'), {canvasList: canvasList}, function (err, html) {
             //console.log(html);
             console.log(err);
             res.send(html);
         });
+    });
+});
+router.get('/home/:facebookID', function(req, res) {
+    Canvas.find({whose: req.params.facebookID}, function (err, canvasList) {
+        var path = require('path');
+        res.render(path.resolve('home'), {canvasList: canvasList}, function (err, html) {
+            //console.log(html);
+            console.log(err);
+            res.send(html);
+        });
+    });
+});
+
+router.get('/new/:facebookID', function(req, res) {
+    // res.render('index', { title: 'Express' });
+    var path = require('path');
+    var canvas = new Canvas();
+    canvas.whose = req.params.facebookID;
+    canvas.save();
+    res.render(path.resolve('index'), {id: canvas._id, isCreation: true}, function (err, html) {
+        //console.log(html);
+        console.log(err);
+        res.send(html);
     });
 });
 

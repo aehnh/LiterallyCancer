@@ -144,7 +144,7 @@ html
             #lc
         .chat-sidebar(id='shell', style='display: none;')
             #chat-window-header
-                p(id='usernamern')
+                p(id='username')
             #chat-window-content-wrapper
             .chat-window-text-box-wrapper
                 textarea.chat-window-text-box(id='only', rows='1', onkeydown="maybeSubmit();", onkeyup="maybeClear();")
@@ -185,7 +185,7 @@ html
                 $('#shell').show();
                 $('#masterfab').show();
                 tempUserName = adjectives[Math.floor((Math.random() * adjectives.length))]+ ' ' + champions[Math.floor((Math.random() * champions.length))];
-                document.getElementById('usernamern').innerHTML = tempUserName;
+                document.getElementById('username').innerHTML = tempUserName;
                 if (lc.getImage() != null) {
                     document.getElementById("masterfab").style.background = '#ea4335';
                 }
@@ -339,15 +339,3 @@ html
                     document.getElementById("masterfab").style.boxShadow = '0 0 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25)';
                 }
             );
-            /*
-            $('#lc').ready(function () {
-                if (#{isCreation}) {
-                    canvasTitle = prompt("Enter the title of canvas", "My canvas");
-                    document.title = canvasTitle;
-                    socket.emit('set title', {
-                        id: '#{id}',
-                        title: canvasTitle
-                    });
-                }
-            });
-            */
