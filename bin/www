@@ -35,14 +35,23 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
     var room_id;
+    var user_id;
     console.log('a user connected');
     // response
+    socket.on('disconnect', function() {
+        io.in(room_id).emit('notification', user_id + ' has disconnected.');
+    });
     socket.on('joinRoom', function (data) {
-        room_id = data;
+        room_id = data.id;
+        user_id = data.username;
         socket.join(room_id);
+        io.in(room_id).emit('notification', data.username + ' has connected.');
     });
     socket.on('chat message', function (args) {
         io.in(args.id).emit('chat message', args);
+    });
+    socket.on('name change', function(args) {
+        io.in(args.id).emit('notification', args.message);
     });
     socket.on('json snapshot', function (args) {
         Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot, dataURL: args.dataURL}, function (err, canvas) {

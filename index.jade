@@ -215,8 +215,9 @@ html
             // socket initialization and room join
             var socket = io();
             socket.on('connect', function () {
-                socket.emit('joinRoom', '#{id}');
+                socket.emit('joinRoom', {id: '#{id}', username: tempUserName});
             });
+
 
             // literallyCanvas initialization
             var lc = LC.init(document.getElementById("lc"), {
@@ -239,7 +240,6 @@ html
             // literallyCanvas event handlers
             lc.on('drawingChange', function() {
                 if (lc.getImage() == null) {
-
                     document.getElementById("masterfab").style.background = '#e6e6e6';
                 } else {
                     document.getElementById("masterfab").style.background = '#ea4335';
@@ -283,6 +283,13 @@ html
                 cached.append(element);
                 cached.scrollTop(cached[0].scrollHeight);
             });
+            socket.on('notification', function(arg) {
+                console.log(arg);
+                var element = '<li style="color: #aaaaaa">' + arg + '</li>';
+                var cached = $('#chat-window-content-wrapper');
+                cached.append(element);
+                cached.scrollTop(cached[0].scrollHeight);
+            });
             socket.on('json shape', function (args) {
                 console.log(LC.JSONToShape(args.curr));
                 console.log(args.prev);
@@ -308,6 +315,7 @@ html
             $('#chat-window-header').click(function(e) {
                 var prompted = prompt("Change username", tempUserName);
                 if(prompted != null) {
+                    socket.emit('name change', {message: tempUserName + ' has changed the name to ' + prompted + '.', id: '#{id}'});
                     tempUserName = prompted;
                     console.log(document.getElementsByTagName('p').value);
                     document.getElementById('usernamern').innerHTML = tempUserName;
