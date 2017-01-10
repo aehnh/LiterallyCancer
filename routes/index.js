@@ -4,17 +4,29 @@ var http = require('http').Server(express());
 var io = require('socket.io')(http);
 var Canvas = require('../models/canvas');
 
-/* create canvas */
-router.get('/', function(req, res, next) {
-  // res.render('index', { title: 'Express' });
+/* create canvas into all */
+router.get('/new', function(req, res, next) {
   var path = require('path');
   var canvas = new Canvas();
   canvas.save();
-  res.render(path.resolve('index'), {id: canvas._id, isCreation: true}, function (err, html) {
+  res.render(path.resolve('index'), {id: canvas._id, isCreation: true, isUser: false}, function (err, html) {
     //console.log(html);
     console.log(err);
     res.send(html);
   });
+});
+
+// create canvas of one user
+router.get('/newToUser/:facebookID', function(req, res) {
+    console.log('logged in with ' + req.params.facebookID);
+    var path = require('path');
+    var canvas = new Canvas();
+    canvas.whose = req.params.facebookID;
+    canvas.save();
+    res.render(path.resolve('index'), {id: canvas._id, isCreation: true, isUser: true, whose: req.params.facebookID}, function (err, html) {
+        console.log(err);
+        res.send(html);
+    });
 });
 
 router.get('/:id', function (req, res) {
@@ -38,6 +50,7 @@ router.get('/:id', function (req, res) {
 
 router.get('/dev/home', function(req, res) {
     Canvas.find({}, function (err, canvasList) {
+        console.log('not logged in.');
         var path = require('path');
         res.render(path.resolve('home'), {canvasList: canvasList}, function (err, html) {
             //console.log(html);
@@ -49,24 +62,11 @@ router.get('/dev/home', function(req, res) {
 router.get('/home/:facebookID', function(req, res) {
     Canvas.find({whose: req.params.facebookID}, function (err, canvasList) {
         var path = require('path');
-        res.render(path.resolve('home'), {canvasList: canvasList}, function (err, html) {
+        res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID}, function (err, html) {
             //console.log(html);
             console.log(err);
             res.send(html);
         });
-    });
-});
-
-router.get('/new/:facebookID', function(req, res) {
-    // res.render('index', { title: 'Express' });
-    var path = require('path');
-    var canvas = new Canvas();
-    canvas.whose = req.params.facebookID;
-    canvas.save();
-    res.render(path.resolve('index'), {id: canvas._id, isCreation: true}, function (err, html) {
-        //console.log(html);
-        console.log(err);
-        res.send(html);
     });
 });
 

@@ -75,7 +75,7 @@ html
                             .profile
                                 //img.profile-photo(src='/static/img/user.png', alt='user')
                                 //span.profile-username Welcome John
-                                span#loginButton.profile-username(style='cursor: pointer') Log in with Facebook
+                                span#loginButton.profile-username(style='cursor: pointer') #{}
                             //.login
                                 .login-triangle
                                 h2.login-header Log in
@@ -104,7 +104,7 @@ html
                                     .c-card__description
                                         p
                                             | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
-        a#masterfab(target='_blank', href='/new').fab
+        a#masterfab(target='_blank', href='/newToUser/#{facebookID}').fab
             img(src='/static/img/add.png')
         .fs-container
             #lc
@@ -149,7 +149,6 @@ html
                                 console.log('Successful login for: ' + response.name);
                                 document.getElementById('loginButton').textContent = 'Welcome, ' + response.name;
                                 facebookID = response.id;
-                                //window.location = "http://ec2-52-78-120-94.ap-northeast-2.compute.amazonaws.com/home" + response.id;
                             });
                         }, {scope: 'email'});
                     }
