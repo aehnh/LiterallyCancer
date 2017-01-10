@@ -55,12 +55,13 @@ html
                                 img(src='/static/img/logo.png', alt='logo')
                         .col-md-1.col-sm-2.col-xs-3
                             .menu
-
+                        //Search bar
                         .col-md-6
                             .search
                                 input.search-input(type='input')
                                 span.icon
                                     i.fa.fa-search
+                        //Log in button
                         .col-md-3
                             .profile
                                 //img.profile-photo(src='/static/img/user.png', alt='user')
@@ -68,6 +69,7 @@ html
                                 span.profile-username Log in
         .container
             .masonry-grid.row
+                // Canvas grid item
                 .col-md-12
                     each canvas in canvasList
                         .col-md-3.col-sm-5.grid-item
@@ -79,10 +81,6 @@ html
                                 .c-card__description
                                     p
                                         | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
-            .page-loading
-                p
-                    span.fa.fa-spinner
-                    |  Page Loading
         #masterfab.fab
             a#newCanvas(href='/', style="text-decoration:none") +
         .fs-container
