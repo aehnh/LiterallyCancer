@@ -66,7 +66,6 @@ router.get('/dev/home', function(req, res) {
 router.get('/home/:facebookID/:name', function(req, res) {
     Canvas.find({whose: req.params.facebookID}, '_id dataURL title description',  function (err, canvasList) {
         var path = require('path');
-        //var canvas_list = JSON.stringify(canvasList);
         res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID, name: req.params.name}, function (err, html) {
             //console.log(html);
             console.log(err);

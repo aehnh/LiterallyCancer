@@ -101,9 +101,13 @@ html
                                             img(src='/static/img/empty.png', width='240', height='152')
                                 .c-card__name
                                     p #{canvas.title}
-                                .c-card__description
-                                    p
-                                        | Description
+                                .c-card__description(id='#{canvas._id}')
+                                    if canvas.description
+                                        p
+                                            | #{canvas.description}
+                                    else
+                                        p
+                                            | Description
         a#masterfab(target='_blank', href='/newToUser/#{facebookID}').fab
             img(src='/static/img/add.png')
         .fs-container
@@ -141,6 +145,8 @@ html
                     var prompted = prompt("Write description", this.value);
                     if (prompted != null) {
                         this.textContent = prompted;
+                        console.log("/descriptionChange/" + this.id);
+                        $.post( "/descriptionChange/" + this.id, { description: prompted } );
                     }
                 })
             });
@@ -149,6 +155,7 @@ html
                     var prompted = prompt("Change title", this.value);
                     if (prompted != null) {
                         this.textContent = prompted;
+                        $.post("/titleChange/" + this.id, {title: prompted});
                     }
                 })
             });
