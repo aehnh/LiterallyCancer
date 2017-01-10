@@ -74,4 +74,25 @@ router.get('/home/:facebookID/:name', function(req, res) {
     });
 });
 
+router.get('/home/:facebookID/:name/:search', function(req, res) {
+    Canvas.find({title: { "$regex": req.params.search, "$options": "i" }, whose: req.params.facebookID}, function(err,canvasList) {
+        var path = require('path');
+        res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID, name: req.params.name}, function (err, html) {
+            //console.log(html);
+            console.log(err);
+            res.send(html);
+        });
+    });
+    /*
+    Canvas.find({whose: req.params.facebookID}, function (err, canvasList) {
+        var path = require('path');
+        res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID, name: req.params.name}, function (err, html) {
+            //console.log(html);
+            console.log(err);
+            res.send(html);
+        });
+    });
+    */
+});
+
 module.exports = router;

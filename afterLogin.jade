@@ -67,8 +67,8 @@ html
                         //Search bar
                         .col-md-6
                             .search
-                                input.search-input(type='input')
-                                span.icon
+                                input#searchText.search-input(type='input')
+                                span#searchButton.icon
                                     i.fa.fa-search
                         //Log in button
                         .col-md-3
@@ -103,7 +103,7 @@ html
                                         p #{canvas.title}
                                     .c-card__description
                                         p
-                                            | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
+                                            | Description
         a#masterfab(target='_blank', href='/newToUser/#{facebookID}').fab
             img(src='/static/img/add.png')
         .fs-container
@@ -117,6 +117,17 @@ html
         script(type='text/javascript').
             $('#masterfab').click(function (e) {
                 document.getElementById('masterfab').href = '/newToUser/' + '#{facebookID}';
+            });
+            $('#searchText').bind("enterKey", function (e) {
+                window.location = "http://ec2-52-78-120-94.ap-northeast-2.compute.amazonaws.com/home/" + '#{facebookID}' + '/' + '#{name}' + '/' + document.getElementById('searchText').value;
+            });
+            $('#searchText').keyup(function (e) {
+                if (e.keyCode == 13) {
+                    $(this).trigger("enterKey");
+                }
+            });
+            $('#searchButton').click(function (e) {
+                window.location = "http://ec2-52-78-120-94.ap-northeast-2.compute.amazonaws.com/home/" + '#{facebookID}' + '/' + '#{name}' + '/' + document.getElementById('searchText').value;
             });
             $('#masterfab').hover(
                 function () {
