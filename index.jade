@@ -200,7 +200,8 @@ html
             lc.on('drawingChange', function() {
                 socket.emit('json snapshot', {
                     id: '#{id}',
-                    snapshot: JSON.stringify(lc.getSnapshot())
+                    snapshot: JSON.stringify(lc.getSnapshot()),
+                    dataURL: lc.getImage().toDataURL()
                 });
             });
             lc.on('shapeSave', function (args) {
