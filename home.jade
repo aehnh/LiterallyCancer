@@ -11,6 +11,7 @@ html
         link(href='/static/css/literallycanvas.css', rel='stylesheet')
         link(rel='stylesheet', type='text/css', href='/static/css/bootstrap.min.css')
         link(rel='stylesheet', type='text/css', href='/static/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/static/css/loginStyle.css')
 
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, user-scalable=no')
@@ -29,6 +30,7 @@ html
             }
 
             .fab {
+                background: #03A9F4;
                 width: 64px;
                 height: 64px;
                 border-radius: 50%;
@@ -73,21 +75,32 @@ html
                             .profile
                                 //img.profile-photo(src='/static/img/user.png', alt='user')
                                 //span.profile-username Welcome John
-                                span.profile-username Log in
+                                span#loginButton.profile-username(style='cursor: pointer') Log in with Facebook
+                            //.login
+                                .login-triangle
+                                h2.login-header Log in
+                                form.login-container
+                                    p
+                                        input(type='email', placeholder='Email')
+                                    p
+                                        input(type='password', placeholder='Password')
+                                    p
+                                        input(type='submit', value='Log in')
         .container
             .masonry-grid.row
                 // Canvas grid item
                 .col-md-12
                     each canvas in canvasList
-                        .col-md-3.col-sm-5.grid-item
-                            .c-card
-                                .c-card__thumbnail
-                                    img(src='#{canvas.dataURL}', width='240', height='152', alt='No content')
-                                .c-card__name
-                                    p #{canvas.title}
-                                .c-card__description
-                                    p
-                                        | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
+                        a(target='_blank', href='/#{canvas._id}')
+                            .col-md-3.col-sm-5.grid-item
+                                .c-card
+                                    .c-card__thumbnail
+                                        img(src='#{canvas.dataURL}', width='240', height='152', alt='No content')
+                                    .c-card__name
+                                        p #{canvas.title}
+                                    .c-card__description
+                                        p
+                                            | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
         a#masterfab(href='/').fab
             img(src='/static/img/add.png')
         .fs-container
@@ -95,6 +108,10 @@ html
         script(src='/static/js/react-0.14.3.js')
         script(src='/static/js/literallycanvas.js')
         script(src='http://code.jquery.com/jquery-3.1.1.js')
+        script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
         script(src='/static/js/masonry.min.js')
         script(src='/static/js/grid.js')
         script(type='text/javascript').
+            $('#loginButton').click(function (e) {
+                window.open('https://google.com')
+            });
