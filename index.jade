@@ -48,8 +48,8 @@ html
                 line-height: 70px;
                 box-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25);
                 position: fixed;
-                bottom: calc(1 / 4 * 3 * 64px);
-                right: calc(340px + 1 / 4 * 3 * 64px);
+                bottom: calc(31px + 1 / 4 * 3 * 64px);
+                right: calc(341px + 1 / 4 * 3 * 64px);
                 font-size: 24px;
                 display: inline-block;
                 cursor: default;
@@ -74,6 +74,7 @@ html
                 width: 100%;
                 height: 50px;
                 background-color: #555555;
+                cursor: pointer;
             }
 
             #chat-window-header p {
@@ -317,6 +318,8 @@ html
             masterfabulous.click(function (e) {
                 if(lc.getImage() != null) {
                     document.getElementById("masterfab").href = lc.getImage().toDataURL();
+                } else {
+                    document.getElementById("masterfab").removeAttribute('href');
                 }
             });
             masterfabulous.hover(
