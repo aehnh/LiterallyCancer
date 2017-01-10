@@ -14,19 +14,6 @@ html
                 font-family: Arial;
             }
 
-            .chat-sidebar {
-                display: inline-block;
-                width: 400px;
-                position: fixed;
-                height: 100%;
-                right: 0;
-                top: 0;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                background-color: #e6e6e6;
-                border-left: 1px solid #d5d7dc;
-            }
-
             .fs-container {
                 display: inline-block;
                 position: absolute;
@@ -54,10 +41,49 @@ html
                 box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5), 3px 3px 3px rgba(0, 0, 0, 0.25);
                 position: fixed;
                 bottom: calc(1 / 4 * 3 * 64px);
-                right: calc(400px + 1 / 4 * 3 * 64px);
+                right: calc(340px + 1 / 4 * 3 * 64px);
                 font-size: 2.6667em;
                 display: inline-block;
                 cursor: default;
+            }
+
+            .chat-sidebar {
+                display: inline-block;
+                width: 340px;
+                position: fixed;
+                height: 100%;
+                right: 0;
+                top: 0;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background-color: #e6e6e6;
+                border-left: 1px solid #d5d7dc;
+            }
+
+            #chat-window-header {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 50px;
+                background-color: #555555;
+            }
+
+            #chat-window-header p {
+                text-align: center;
+                vertical-align: middle;
+                line-height: 50px;
+                color: #ffffff;
+            }
+
+            #chat-window-content-wrapper {
+                position: absolute;
+                top: 50px;
+                width: 100%;
+                height: calc(100% - 100px - 50px);
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+                overflow: auto;
             }
 
             textarea.chat-window-text-box {
@@ -91,17 +117,6 @@ html
                 height: 50px;
             }
 
-            #chat-window-content-wrapper {
-                position: absolute;
-                top: 0;
-                width: 100%;
-                height: calc(100% - 100px);
-                margin: 0;
-                padding: 0;
-                list-style-type: none;
-                overflow: auto;
-            }
-
             ::-webkit-scrollbar {
                 display: none;
             }
@@ -119,6 +134,8 @@ html
         .fs-container
             #lc
         .chat-sidebar(id='shell', style='display: none;')
+            #chat-window-header
+                p(id='usernamern')
             #chat-window-content-wrapper
             .chat-window-text-box-wrapper
                 textarea.chat-window-text-box(id='only', rows='1', onkeydown="maybeSubmit();", onkeyup="maybeClear();")
@@ -148,8 +165,8 @@ html
                 }
                 // show chatting sidebar
                 $('#shell').show();
-                // TODO assign id?
                 tempUserName = adjectives[Math.floor((Math.random() * adjectives.length))]+ ' ' + champions[Math.floor((Math.random() * champions.length))];
+                document.getElementById('usernamern').innerHTML = tempUserName;
             };
 
             function maybeSubmit() {
@@ -258,6 +275,13 @@ html
                 lc.setColor('background', color, false);
             });
 
+            $(function() {
+                $('#chat-window-header').click(function(e) {
+                    tempUserName = prompt("Change username", tempUserName);
+                    console.log(document.getElementsByTagName('p').value);
+                    document.getElementById('usernamern').innerHTML = tempUserName;
+                });
+            });
             // floating action button click listener
             $(function () {
                 $('#masterfab').click(function (e) {
