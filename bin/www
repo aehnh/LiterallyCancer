@@ -45,7 +45,7 @@ io.on('connection', function (socket) {
         io.in(args.id).emit('chat message', args);
     });
     socket.on('json snapshot', function (args) {
-        Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
+        Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot, dataURL: args.dataURL}, function (err, canvas) {
             if (err)  {
                 console.error(err);
             } else if (!canvas) {
@@ -54,7 +54,6 @@ io.on('connection', function (socket) {
         });
     });
     socket.on('json shape', function (args) {
-        console.log(args);
         /* Canvas.findByIdAndUpdate(args.id, {snapshotJSON: args.snapshot}, function (err, canvas) {
             if (err)  {
                 console.error(err);

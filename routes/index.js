@@ -36,4 +36,15 @@ router.get('/:id', function (req, res) {
   });
 });
 
+router.get('/dev/home', function(req, res) {
+    Canvas.find(function (err, canvasList) {
+        var path = require('path');
+        res.render(path.resolve('home'), {canvasList: canvasList}, function (err, html) {
+            //console.log(html);
+            console.log(err);
+            res.send(html);
+        });
+    });
+});
+
 module.exports = router;
