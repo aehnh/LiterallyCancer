@@ -1,0 +1,137 @@
+@font-face {
+    font-family: OpenSans;
+    src: url(/static/fonts/OpenSans.ttf);
+}
+
+body {
+    background-color: #f0efee;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: white;
+    box-shadow: 0.5px 0.9px 1px rgba(0, 0, 0, 0.15);
+}
+
+.c-top {
+    line-height: 7;
+}
+
+.c-top .search .icon {
+    color: #6d6d6d;
+    opacity: 0.5;
+    position: relative;
+    right: 25px;
+}
+
+.c-top .search .search-input {
+    background-color: #f7f6f6;
+    border: 1px solid #e7e7e7;
+    border-radius: 2px 3px 3px 2px;
+    height: 32px;
+    width: 422px;
+}
+
+.c-top .profile .profile-username {
+    color: #8c8c8c;
+    font-family: OpenSans;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    .c-top .search {
+        display: none;
+    }
+    .c-top .profile {
+    display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .c-top .search {
+        display: none;
+    }
+    .c-top .profile {
+    display: none;
+    }
+
+}
+
+.c-card {
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.12);
+	height: auto;
+	margin-top: 20px;
+    min-height: 344px;
+    width: 240px;
+}
+
+.c-card .c-card__name {
+    color: #717171;
+    font-family: OpenSans;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    padding: 10px 0 0 20px;
+}
+
+.c-card .c-card__location {
+    color: #acaaaa;
+    font-family: OpenSans;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 27px;
+    padding-left: 18px;
+}
+
+.c-card .c-card__description {
+    color: #acaaaa;
+    font-family: OpenSans;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: 10px 10px 10px 20px;
+}
+
+.c-card .c-card__rating {
+    padding: 0 0 15px 15px;
+}
+
+.c-card .c-card__rating .fb-share {
+    float: right;
+    font-size: 20px;
+    padding-right: 15px;
+}
+
+.page-loading {
+    color: #717171;
+    font-family: OpenSans;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 27px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.fa-spinner {
+	-webkit-animation: preloader 3s infinite linear;
+	animation: preloader 3s infinite linear;
+}
+
+
+@-webkit-keyframes preloader {
+ to {
+	 -webkit-transform: rotate(360deg);
+	 transform: rotate(360deg);
+	}
+}
+
+@keyframes preloader {
+ to {
+	 -webkit-transform: rotate(360deg);
+	 transform: rotate(360deg); }
+}
