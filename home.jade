@@ -83,16 +83,16 @@ html
                 // Canvas grid item
                 .col-md-12
                     each canvas in canvasList
-                        .col-md-3.col-sm-5.grid-item
-                            .c-card
-                                .c-card__thumbnail
-
-                                    img(src='#{canvas.dataURL}', width='240', height='152', alt='No content')
-                                .c-card__name
-                                    p #{canvas.title}
-                                .c-card__description
-                                    p
-                                        | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
+                        a(target='_blank', href='/#{canvas._id}')
+                            .col-md-3.col-sm-5.grid-item
+                                .c-card
+                                    .c-card__thumbnail
+                                        img(src='#{canvas.dataURL}', width='240', height='152', alt='No content')
+                                    .c-card__name
+                                        p #{canvas.title}
+                                    .c-card__description
+                                        p
+                                            | Lorem Ipsum is simply dummy text of the printing & typesetting industry.
         #masterfab.fab
             a#newCanvas(href='/', style="text-decoration:none") +
         .fs-container
