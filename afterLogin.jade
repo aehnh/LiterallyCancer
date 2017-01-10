@@ -75,7 +75,7 @@ html
                             .profile
                                 //img.profile-photo(src='/static/img/user.png', alt='user')
                                 //span.profile-username Welcome John
-                                span#loginButton.profile-username(style='cursor: pointer') #{}
+                                span#loginButton.profile-username Welcome, #{name}
                             //.login
                                 .login-triangle
                                 h2.login-header Log in
@@ -115,53 +115,8 @@ html
         script(src='/static/js/masonry.min.js')
         script(src='/static/js/grid.js')
         script(type='text/javascript').
-            var facebookID;
-            window.fbAsyncInit = function () {
-                FB.init({
-                    appId: '1840394736229123',
-                    xfbml: true,
-                    version: 'v2.8'
-                });
-                FB.AppEvents.logPageView();
-            };
-
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    return;
-                }
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-            $('#loginButton').click(function (e) {
-                FB.getLoginStatus(function (response) {
-                    if (response.status === 'connected') {
-                        console.log('Logged in.');
-                        FB.logout();
-                        document.getElementById('loginButton').textContent = 'Log in with Facebook';
-                    }
-                    else {
-                        FB.login(function () {
-                            FB.api('/me', function (response) {
-                                console.log(response);
-                                console.log('Successful login for: ' + response.name);
-                                document.getElementById('loginButton').textContent = 'Welcome, ' + response.name;
-                                facebookID = response.id;
-                            });
-                        }, {scope: 'email'});
-                    }
-                });
-            });
             $('#masterfab').click(function (e) {
-                if (typeof facebookID === 'undefined') {
-                    console.log('facebookid undefined.');
-                    document.getElementById('masterfab').href = '/';
-                } else {
-                    console.log('facebookid!.');
-                    document.getElementById('masterfab').href = '/new/' + facebookID;
-                }
+                document.getElementById('masterfab').href = '/newToUser/' + '#{facebookID}';
             });
             $('#masterfab').hover(
                 function () {

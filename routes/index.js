@@ -48,6 +48,10 @@ router.get('/:id', function (req, res) {
   });
 });
 
+router.get('/', function(req, res) {
+    res.redirect('/dev/home');
+});
+
 router.get('/dev/home', function(req, res) {
     Canvas.find({}, function (err, canvasList) {
         console.log('not logged in.');
@@ -59,10 +63,10 @@ router.get('/dev/home', function(req, res) {
         });
     });
 });
-router.get('/home/:facebookID', function(req, res) {
+router.get('/home/:facebookID/:name', function(req, res) {
     Canvas.find({whose: req.params.facebookID}, function (err, canvasList) {
         var path = require('path');
-        res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID}, function (err, html) {
+        res.render(path.resolve('afterLogin'), {canvasList: canvasList, facebookID: req.params.facebookID, name: req.params.name}, function (err, html) {
             //console.log(html);
             console.log(err);
             res.send(html);

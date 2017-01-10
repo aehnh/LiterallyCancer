@@ -149,7 +149,7 @@ html
                                 console.log('Successful login for: ' + response.name);
                                 document.getElementById('loginButton').textContent = 'Welcome, ' + response.name;
                                 facebookID = response.id;
-                                //window.location = "http://ec2-52-78-120-94.ap-northeast-2.compute.amazonaws.com/home" + response.id;
+                                window.location = "http://ec2-52-78-120-94.ap-northeast-2.compute.amazonaws.com/home/" + response.id + '/' + response.name;
                             });
                         }, {scope: 'email'});
                     }
@@ -158,10 +158,10 @@ html
             $('#masterfab').click(function (e) {
                 if (typeof facebookID === 'undefined') {
                     console.log('facebookid undefined.');
-                    document.getElementById('masterfab').href = '/';
+                    document.getElementById('masterfab').href = '/new';
                 } else {
                     console.log('facebookid!.');
-                    document.getElementById('masterfab').href = '/new/' + facebookID;
+                    document.getElementById('masterfab').href = '/newToUser/' + facebookID;
                 }
             });
             $('#masterfab').hover(
